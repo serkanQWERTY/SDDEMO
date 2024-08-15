@@ -1,7 +1,12 @@
-﻿CreatedBy kalkacak.
-İlişkisel veritabanı??
-ElasticSearch entegrasyon.
-Loglama işi ve pathi.
-Exception Handling
+﻿
+Teslim Öncesi
+1- Loglama ifadeleri!
+2- Refaktöring, Guards!
+3- Summaries!
 
 
+Geliştirme
+
+1- Repoyu komple yaz.
+2- Configuration Reposunu yaz ElasticSearch Entegrasyonu.
+3- Son işlemler ve backend'i bitir.

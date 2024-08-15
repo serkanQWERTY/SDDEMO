@@ -25,6 +25,7 @@ namespace SDDEMO.Manager.Helpers
             this.appConfigData = AppConfigData.GetAppConfig();
             this.secretKey = appConfigData.jwtSecretKey;
         }
+
         public TokenProvider(IHttpContextAccessor httpContextAccessor, IUnitOfWork unitOfWork)
         {
             this.httpContextAccessor = httpContextAccessor;

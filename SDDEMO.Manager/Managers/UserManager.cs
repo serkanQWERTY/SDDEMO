@@ -32,6 +32,8 @@ namespace SDDEMO.Manager.Managers
         /// <returns></returns>
         public BaseApiResponse<RegisterViewModel> Register(RegisterDto registerDto)
         {
+            var currentUser = new TokenProvider(_httpContextAccessor, _unitOfWork).GetUserByToken();
+
             var existingUser = _unitOfWork.userRepository.GetAllWithFilter(u =>
                 u.username == registerDto.username || u.mailAddress == registerDto.mailAddress).FirstOrDefault();
 
@@ -52,6 +54,7 @@ namespace SDDEMO.Manager.Managers
                 isActive = true,
                 isDeleted = false,
                 updatedDate = DateTime.UtcNow,
+                createdBy = currentUser.id
             };
 
             _unitOfWork.userRepository.Add(newUser);
@@ -59,7 +62,7 @@ namespace SDDEMO.Manager.Managers
 
             RegisterViewModel mappedData = Mapper.Map<User, RegisterViewModel>(newUser);
 
-            logger.InfoLog($"Yeni kullanıcı kaydı oluşturuldu: {mappedData.username}", true, mappedData.mailAddress);
+            logger.InfoLog($"Yeni kullanıcı kaydı oluşturuldu: {mappedData.username}", isLogin: false, usernameLogin: mappedData.mailAddress);
 
             return ApiHelper<RegisterViewModel>.GenerateApiResponse(true, mappedData, ResponseMessages.SuccessfullyCreated.ToDescriptionString());
         }
@@ -79,7 +82,7 @@ namespace SDDEMO.Manager.Managers
                 LoginViewModel mappedData = Mapper.Map<User, LoginViewModel>(user);
                 mappedData.token = new TokenProvider().GenerateToken(user);
 
-                logger.InfoLog("Kullanıcı girişi yapıldı. Kullanıcı adı: " + mappedData.username, true, mappedData.mailAddress);
+                logger.InfoLog("Kullanıcı girişi yapıldı. Kullanıcı adı: " + mappedData.username  + " Kullanıcı Mail adresi: " + mappedData.mailAddress, true, mappedData.mailAddress);
 
                 return ApiHelper<LoginViewModel>.GenerateApiResponse(true, mappedData, "");
             }
@@ -93,7 +96,9 @@ namespace SDDEMO.Manager.Managers
         /// <returns></returns>
         public BaseApiResponse<bool> LogOut()
         {
-            logger.InfoLog("Kullanıcı sistemden çıkış yaptı.");
+            var currentUser = new TokenProvider(_httpContextAccessor, _unitOfWork).GetUserByToken();
+
+            logger.InfoLog("Kullanıcı sistemden çıkış yaptı. Kullanıcı adı: " + currentUser.username + " Kullanıcı Mail adresi: " + currentUser.mailAddress, true, currentUser.mailAddress);
             return ApiHelper<bool>.GenerateApiResponse(true, true, "");
         }
     }

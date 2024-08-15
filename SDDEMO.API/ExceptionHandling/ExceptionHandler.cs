@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Newtonsoft.Json;
+using NLog;
+using SDDEMO.Application.Constants;
 using SDDEMO.Application.Enums;
 using SDDEMO.Application.Extensions;
 using SDDEMO.Manager.Helpers;
@@ -11,7 +13,7 @@ namespace SDDEMO.API.ExceptionHandling
     {
         public static void UseCustomException(this IApplicationBuilder app)
         {
-            //var logger = LogManager.LoadConfiguration(FilePaths.logConfigPath).GetCurrentClassLogger();
+            var logger = LogManager.LoadConfiguration(FilePaths.systemLogFolderName).GetCurrentClassLogger();
 
             app.UseExceptionHandler(config =>
             {
@@ -29,10 +31,9 @@ namespace SDDEMO.API.ExceptionHandling
                         .Replace("{errorMessage}", ex.Message)
                         .Replace("{stackTrace}", ex.StackTrace);
 
-                        //logger.Error(logMessage);
+                        logger.Error(logMessage);
 
-                        //var result = ApiHelper<bool>.GenerateApiResponse(false, false, ResponseMessages.AnErrorOccured.ToDescriptionString());
-                        var result = ApiHelper<bool>.GenerateApiResponse(false, false, logMessage);
+                        var result = ApiHelper<bool>.GenerateApiResponse(false, false, ResponseMessages.AnErrorOccured.ToDescriptionString());
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(result));
                     }
                 });
