@@ -3,6 +3,7 @@ Teslim Öncesi
 1- Loglama ifadeleri!
 2- Refaktöring, Guards!
 3- Summaries!
+4- Syntax!
 
 
 Geliştirme
