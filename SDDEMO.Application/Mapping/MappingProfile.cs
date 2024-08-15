@@ -15,7 +15,8 @@ namespace SDDEMO.Application.Mapping
         {
             CreateMap<User, LoginViewModel>().
                ForMember(dest => dest.id, opt => opt.MapFrom(src => src.id)).
-               ForMember(dest => dest.username, opt => opt.MapFrom(src => src.username));
+               ForMember(dest => dest.username, opt => opt.MapFrom(src => src.username)).
+               ForMember(dest => dest.mailAddress, opt => opt.MapFrom(src => src.mailAddress));
 
             CreateMap<User, RegisterViewModel>().
                ForMember(dest => dest.id, opt => opt.MapFrom(src => src.id)).

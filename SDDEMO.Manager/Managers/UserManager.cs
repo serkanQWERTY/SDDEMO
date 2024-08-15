@@ -59,7 +59,7 @@ namespace SDDEMO.Manager.Managers
 
             RegisterViewModel mappedData = Mapper.Map<User, RegisterViewModel>(newUser);
 
-            logger.InfoLog($"Yeni kullanıcı kaydı oluşturuldu: {mappedData.username}", true, mappedData.username);
+            logger.InfoLog($"Yeni kullanıcı kaydı oluşturuldu: {mappedData.username}", true, mappedData.mailAddress);
 
             return ApiHelper<RegisterViewModel>.GenerateApiResponse(true, mappedData, ResponseMessages.SuccessfullyCreated.ToDescriptionString());
         }
@@ -79,7 +79,7 @@ namespace SDDEMO.Manager.Managers
                 LoginViewModel mappedData = Mapper.Map<User, LoginViewModel>(user);
                 mappedData.token = new TokenProvider().GenerateToken(user);
 
-                logger.InfoLog("Kullanıcı girişi yapıldı. Kullanıcı adı: " + mappedData.username, true, mappedData.username);
+                logger.InfoLog("Kullanıcı girişi yapıldı. Kullanıcı adı: " + mappedData.username, true, mappedData.mailAddress);
 
                 return ApiHelper<LoginViewModel>.GenerateApiResponse(true, mappedData, "");
             }
