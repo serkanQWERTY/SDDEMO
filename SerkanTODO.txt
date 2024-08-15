@@ -9,5 +9,5 @@ Teslim Öncesi
 Geliştirme
 
 1- Repoyu komple yaz.
-2- Configuration Reposunu yaz ElasticSearch Entegrasyonu.
+2- Configuration Reposunu (komple) yaz ElasticSearch Entegrasyonu.
 3- Son işlemler ve backend'i bitir.
