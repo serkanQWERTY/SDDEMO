@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog.Web;
 using SDDEMO.API.BackgroundJobs;
+using SDDEMO.API.ExceptionHandling;
 using SDDEMO.Application.Interfaces.Managers;
 using SDDEMO.Application.Interfaces.UnitOfWork;
 using SDDEMO.Manager.Helpers;
@@ -114,25 +115,38 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ILoggingManager, LoggingManager>();
 
 
-
 builder.Services.AddSingleton<TestHandler>();
 
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+
+app.UseCustomException();
+
 app.UseHttpsRedirection();
+
+app.UseCors();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<DatabaseContext>();
+    context.Database.Migrate();
+}
 
 app.Run();
