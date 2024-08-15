@@ -16,11 +16,11 @@ namespace SDDEMO.Application.DefaultDataGenerator.cs
             return new User
             {
                 id = Guid.Parse(GuidValues.StaticUserId.ToDescriptionString()),
-                username = "admin",
-                password = "serkanDMR",
-                mailAddress = "admin@example.com",
                 name = "admin",
                 surname = "admin",
+                username = "admin",
+                password = "serkan",
+                mailAddress = "admin@example.com",
                 creationDate = DateTime.UtcNow,
                 isActive = true,
                 isDeleted = false,

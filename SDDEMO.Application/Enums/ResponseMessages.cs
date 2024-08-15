@@ -41,5 +41,8 @@ namespace SDDEMO.Application.Enums
 
         [Description("Geçersiz değer.")]
         InvalidValue,
+
+        [Description("Kullanıcı zaten mevcut.")]
+        UserAlreadyExists
     }
 }

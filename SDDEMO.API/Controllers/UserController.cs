@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SDDEMO.API.Utils;
@@ -16,9 +17,31 @@ namespace SDDEMO.API.Controllers
     {
         private readonly IUserManager userManager;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="userManager"></param>
         public UserController(IUserManager userManager)
         {
             this.userManager = userManager;
+        }
+
+        /// <summary>
+        /// User Register Operation.
+        /// </summary>
+        /// <param name="registerDto"></param>
+        /// <returns>Returns ViewModel</returns>
+        [HttpPost("Register")]
+        public IActionResult Register([FromBody] RegisterDto registerDto)
+        {
+            var validationResult = new RegisterValidator().Validate(registerDto);
+
+            if (!validationResult.IsValid)
+                return BasicResponse.GetValidationErrorResponse(validationResult);
+
+            var result = userManager.Register(registerDto);
+
+            return ApiResponseProvider<RegisterViewModel>.CreateResult(result);
         }
 
         /// <summary>
@@ -26,7 +49,7 @@ namespace SDDEMO.API.Controllers
         /// </summary>
         /// <param name="loginDto">Username and password</param>
         /// <returns>Returns token if login operation is successfull</returns>
-        [HttpPost("GetToken")]
+        [HttpPost("GetTokenAndLogin")]
         public IActionResult GetToken([FromBody] LoginDto loginDto)
         {
             var validationResult = new LoginValidator().Validate(loginDto);
@@ -37,7 +60,6 @@ namespace SDDEMO.API.Controllers
             var result = userManager.Login(loginDto);
 
             return ApiResponseProvider<LoginViewModel>.CreateResult(result);
-
         }
 
         /// <summary>
