@@ -48,7 +48,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Version = "v1",
         Title = "SDDEMO / Web API",
-        Description = "ASP.NET Core Web API. \nDeveloped by Serkan DEMİR"
+        Description = "ASP.NET Core Web API. \nDeveloped by Serkan DEMİR 15/08/2024"
     });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
