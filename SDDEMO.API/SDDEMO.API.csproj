@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <DocumentationFile>bin\Debug\net6.0\swaggerApiDoc.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.4.0" />
+    <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NLog" Version="5.3.3" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0" />
+    <PackageReference Include="NPOI" Version="2.7.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SDDEMO.Application\SDDEMO.Application.csproj" />
+    <ProjectReference Include="..\SDDEMO.Domain\SDDEMO.Domain.csproj" />
+    <ProjectReference Include="..\SDDEMO.Infrastructure\SDDEMO.Infrastructure.csproj" />
+    <ProjectReference Include="..\SDDEMO.Manager\SDDEMO.Manager.csproj" />
+    <ProjectReference Include="..\SDDEMO.Persistance\SDDEMO.Persistance.csproj" />
+  </ItemGroup>
+
+</Project>
