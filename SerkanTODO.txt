@@ -2,3 +2,6 @@
 İlişkisel veritabanı??
 ElasticSearch entegrasyon.
 Loglama işi ve pathi.
+Exception Handling
+
+
