@@ -1,0 +1,4 @@
+﻿CreatedBy kalkacak.
+İlişkisel veritabanı??
+ElasticSearch entegrasyon.
+Loglama işi ve pathi.
