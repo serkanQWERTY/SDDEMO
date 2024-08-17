@@ -15,5 +15,11 @@ namespace SDDEMO.Application.Interfaces.Managers
         BaseApiResponse<RegisterViewModel> Register(RegisterDto registerDto);
         BaseApiResponse<LoginViewModel> Login(LoginDto loginDto);
         BaseApiResponse<bool> LogOut();
+        BaseApiResponse<List<UserViewModel>> GetAllUsers();
+        BaseApiResponse<bool> DeleteUser(Guid guid);
+        BaseApiResponse<bool> DeleteUserPermanently(Guid guid);
+        BaseApiResponse<UserViewModel> UpdateUser(User user);
+        BaseApiResponse<bool> ChangeStatusUser(Guid guid);
+        BaseApiResponse<UserViewModel> GetUserById(Guid guid);
     }
 }

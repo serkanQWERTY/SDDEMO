@@ -22,6 +22,18 @@ namespace SDDEMO.Application.Mapping
                ForMember(dest => dest.id, opt => opt.MapFrom(src => src.id)).
                ForMember(dest => dest.username, opt => opt.MapFrom(src => src.username)).
                ForMember(dest => dest.mailAddress, opt => opt.MapFrom(src => src.mailAddress));
+
+            CreateMap<User, UserViewModel>().
+               ForMember(dest => dest.id, opt => opt.MapFrom(src => src.id)).
+               ForMember(dest => dest.creationDate, opt => opt.MapFrom(src => src.creationDate)).
+               ForMember(dest => dest.updatedDate, opt => opt.MapFrom(src => src.updatedDate)).
+               ForMember(dest => dest.username, opt => opt.MapFrom(src => src.username)).
+               ForMember(dest => dest.name, opt => opt.MapFrom(src => src.name)).
+               ForMember(dest => dest.surname, opt => opt.MapFrom(src => src.surname)).
+               ForMember(dest => dest.mailAddress, opt => opt.MapFrom(src => src.mailAddress)).
+               ForMember(dest => dest.password, opt => opt.MapFrom(src => src.password)).
+               ForMember(dest => dest.isActive, opt => opt.MapFrom(src => src.isActive)).
+               ForMember(dest => dest.isDeleted, opt => opt.MapFrom(src => src.isDeleted));
         }
     }
 }

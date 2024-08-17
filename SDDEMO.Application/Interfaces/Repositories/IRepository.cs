@@ -24,5 +24,6 @@ namespace SDDEMO.Application.Interfaces.Repositories
         void DeleteWithRange(List<Guid> guidList);
         void DeleteAll();
         void DeleteByDate(DateTime datetime);
+        void DeletePermanently(Guid id);
     }
 }

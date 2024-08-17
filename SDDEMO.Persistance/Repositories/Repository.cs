@@ -141,5 +141,16 @@ namespace SDDEMO.Persistance.Repositories
 
             _dbSet.Update(entity);
         }
+
+        public void DeletePermanently(Guid id)
+        {
+            var entity = GetById(id);
+
+            if (entity != null)
+            {
+                _dbContext.Set<T>().Remove(entity);
+                _dbContext.SaveChanges();
+            }
+        }
     }
 }

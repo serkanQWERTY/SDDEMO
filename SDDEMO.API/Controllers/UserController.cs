@@ -32,7 +32,6 @@ namespace SDDEMO.API.Controllers
         /// <param name="registerDto"></param>
         /// <returns>Returns ViewModel</returns>
         [HttpPost("Register")]
-        [Authorize]
         public IActionResult Register([FromBody] RegisterDto registerDto)
         {
             var validationResult = new RegisterValidator().Validate(registerDto);
@@ -72,6 +71,54 @@ namespace SDDEMO.API.Controllers
         public IActionResult LogOut()
         {
             return ApiResponseProvider<bool>.CreateResult(userManager.LogOut());
+        }
+
+        /// <summary>
+        /// Get All Users.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetAllUsers")]
+        [Authorize]
+        public IActionResult GetAllUsers()
+        {
+            return ApiResponseProvider<List<UserViewModel>>.CreateResult(userManager.GetAllUsers());
+        }
+
+        /// <summary>
+        /// Change Status of User.
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        [HttpPut("ChangeStatusUser")]
+        [Authorize]
+        public IActionResult ChangeStatusUser(Guid guid)
+        {
+            return ApiResponseProvider<bool>.CreateResult(userManager.ChangeStatusUser(guid));
+        }
+
+        /// <summary>
+        /// Delete User.
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteUser")]
+        [Authorize]
+        public IActionResult DeleteUser(Guid guid)
+        {
+            return ApiResponseProvider<bool>.CreateResult(userManager.DeleteUser(guid));
+        }
+
+
+        /// <summary>
+        /// Delete User Permanently.
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteUserPermanently")]
+        [Authorize]
+        public IActionResult DeleteUserPermanently(Guid guid)
+        {
+            return ApiResponseProvider<bool>.CreateResult(userManager.DeleteUserPermanently(guid));
         }
     }
 }
