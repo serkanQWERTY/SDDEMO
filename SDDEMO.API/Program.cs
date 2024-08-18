@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Nest;
 using NLog.Web;
 using SDDEMO.API.BackgroundJobs;
 using SDDEMO.API.ExceptionHandling;
@@ -117,6 +118,12 @@ builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ILoggingManager, LoggingManager>();
 
+builder.Services.AddSingleton<IElasticClient>(sp =>
+{
+    var settings = new ConnectionSettings(new Uri(builder.Configuration["Elasticsearch:Url"]))
+        .DefaultIndex(builder.Configuration["Elasticsearch:DefaultIndex"]);
+    return new ElasticClient(settings);
+});
 
 builder.Services.AddSingleton<TestHandler>();
 
