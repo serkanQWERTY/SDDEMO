@@ -31,7 +31,6 @@ namespace SDDEMO.Application.Mapping
                ForMember(dest => dest.name, opt => opt.MapFrom(src => src.name)).
                ForMember(dest => dest.surname, opt => opt.MapFrom(src => src.surname)).
                ForMember(dest => dest.mailAddress, opt => opt.MapFrom(src => src.mailAddress)).
-               ForMember(dest => dest.password, opt => opt.MapFrom(src => src.password)).
                ForMember(dest => dest.isActive, opt => opt.MapFrom(src => src.isActive)).
                ForMember(dest => dest.isDeleted, opt => opt.MapFrom(src => src.isDeleted));
         }

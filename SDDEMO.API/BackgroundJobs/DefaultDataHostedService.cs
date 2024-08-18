@@ -1,5 +1,6 @@
 ﻿
 using ICSharpCode.SharpZipLib.Zip;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NPOI.OpenXml4Net.OPC.Internal;
 using NPOI.POIFS.Crypt;
@@ -35,9 +36,11 @@ namespace SDDEMO.API.BackgroundJobs
             using (var scope = serviceScopeFactory.CreateScope())
             {
                 unitOfWork = scope.ServiceProvider.GetService<IUnitOfWork>();
+                var passwordHasher = new PasswordHasher<User>();
 
                 User user = DefaultDataGenerator.DefaultUser();
 
+                user.SetPassword("serkan");
                 var existingUser = unitOfWork.userRepository.GetById(user.id);
 
                 if (existingUser == null)
@@ -47,7 +50,7 @@ namespace SDDEMO.API.BackgroundJobs
                 else
                 {
                     existingUser.username = user.username;
-                    existingUser.password = user.password;
+                    existingUser.passwordHash = user.passwordHash;
                     existingUser.mailAddress = user.mailAddress;
                     existingUser.name = user.name;
                     existingUser.surname = user.surname;
@@ -61,6 +64,5 @@ namespace SDDEMO.API.BackgroundJobs
                 unitOfWork.CommitChanges();
             }
         }
-
     }
 }

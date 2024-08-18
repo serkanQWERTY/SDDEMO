@@ -27,6 +27,7 @@ namespace SDDEMO.Manager.Managers
             this.logger = logger;
         }
 
+
         /// <summary>
         /// Register Manager Method.
         /// </summary>
@@ -49,13 +50,14 @@ namespace SDDEMO.Manager.Managers
                 name = registerDto.name,
                 surname = registerDto.surname,
                 username = registerDto.username,
-                password = registerDto.password,
                 mailAddress = registerDto.mailAddress,
                 creationDate = DateTime.UtcNow,
                 isActive = true,
                 isDeleted = false,
                 updatedDate = DateTime.UtcNow,
             };
+
+            newUser.SetPassword(registerDto.password);
 
             _unitOfWork.userRepository.Add(newUser);
             _unitOfWork.CommitChanges();
@@ -67,6 +69,7 @@ namespace SDDEMO.Manager.Managers
             return ApiHelper<RegisterViewModel>.GenerateApiResponse(true, mappedData, ResponseMessages.SuccessfullyCreated.ToDescriptionString());
         }
 
+
         /// <summary>
         /// Login Manager Method.
         /// </summary>
@@ -74,21 +77,29 @@ namespace SDDEMO.Manager.Managers
         /// <returns></returns>
         public BaseApiResponse<LoginViewModel> Login(LoginDto loginDto)
         {
-            var userToSearch = _unitOfWork.userRepository.GetAllWithFilter(d => String.Equals(d.username.Trim(), loginDto.username.Trim()) && String.Equals(d.password.Trim(), loginDto.password.Trim()));
+            var userToSearch = _unitOfWork.userRepository.GetAllWithFilter(d =>
+                String.Equals(d.username.Trim(), loginDto.username.Trim())).FirstOrDefault();
 
-            if (userToSearch != null && userToSearch.Count() > 0)
+            if (userToSearch == null)
             {
-                User user = userToSearch.FirstOrDefault();
-                LoginViewModel mappedData = Mapper.Map<User, LoginViewModel>(user);
-                mappedData.token = new TokenProvider().GenerateToken(user);
-
-                logger.InfoLog("Kullanıcı girişi yapıldı. Kullanıcı adı: " + mappedData.username + " Kullanıcı Mail adresi: " + mappedData.mailAddress, true, mappedData.mailAddress);
-
-                return ApiHelper<LoginViewModel>.GenerateApiResponse(true, mappedData, ResponseMessages.SuccessfullyDone.ToDescriptionString());
+                logger.InfoLog($"Kullanıcı bulunamadı: {loginDto.username}", isLogin: false, "");
+                return ApiHelper<LoginViewModel>.GenerateApiResponse(false, null, ResponseMessages.UserNotFound.ToDescriptionString());
             }
 
-            return ApiHelper<LoginViewModel>.GenerateApiResponse(false, null, ResponseMessages.UserNotFound.ToDescriptionString());
+            if (!userToSearch.VerifyPassword(loginDto.password))
+            {
+                logger.InfoLog($"Geçersiz şifre denemesi: {loginDto.username}", isLogin: false, "");
+                return ApiHelper<LoginViewModel>.GenerateApiResponse(false, null, ResponseMessages.UserNotFound.ToDescriptionString());
+            }
+
+            LoginViewModel mappedData = Mapper.Map<User, LoginViewModel>(userToSearch);
+            mappedData.token = new TokenProvider().GenerateToken(userToSearch);
+
+            logger.InfoLog($"Kullanıcı girişi yapıldı. Kullanıcı adı: {mappedData.username} Kullanıcı Mail adresi: {mappedData.mailAddress}", isLogin: true, usernameLogin: mappedData.mailAddress);
+
+            return ApiHelper<LoginViewModel>.GenerateApiResponse(true, mappedData, ResponseMessages.SuccessfullyDone.ToDescriptionString());
         }
+
 
         /// <summary>
         /// Logout Manager Method.
@@ -101,6 +112,7 @@ namespace SDDEMO.Manager.Managers
             logger.InfoLog("Kullanıcı sistemden çıkış yaptı. Kullanıcı adı: " + currentUser.username + " Kullanıcı Mail adresi: " + currentUser.mailAddress, true, currentUser.mailAddress);
             return ApiHelper<bool>.GenerateApiResponse(true, true, ResponseMessages.SuccessfullyDone.ToDescriptionString());
         }
+
 
         /// <summary>
         /// Get All Users from Database Method.
@@ -120,6 +132,7 @@ namespace SDDEMO.Manager.Managers
 
             return ApiHelper<List<UserViewModel>>.GenerateApiResponse(true, userViewModels, ResponseMessages.SuccessfullyDone.ToDescriptionString());
         }
+
 
         /// <summary>
         /// Delete User (Change isDeleted Prop) Method.
@@ -143,6 +156,7 @@ namespace SDDEMO.Manager.Managers
             return ApiHelper<bool>.GenerateApiResponse(false, false, ResponseMessages.AnErrorOccured.ToDescriptionString());
         }
 
+
         /// <summary>
         /// Delete User (Permanently) Method.
         /// </summary>
@@ -164,6 +178,7 @@ namespace SDDEMO.Manager.Managers
             return ApiHelper<bool>.GenerateApiResponse(true, true, ResponseMessages.SuccessfullyDeleted.ToDescriptionString());
 
         }
+
 
         /// <summary>
         /// Update User Method.
@@ -189,9 +204,13 @@ namespace SDDEMO.Manager.Managers
             result.name = updateUserDto.name;
             result.surname = updateUserDto.surname;
             result.username = updateUserDto.username;
-            result.password = updateUserDto.password;
             result.mailAddress = updateUserDto.mailAddress;
             result.updatedDate = DateTime.UtcNow;
+
+            if (!string.IsNullOrEmpty(updateUserDto.password))
+            {
+                result.SetPassword(updateUserDto.password);
+            }
 
             _unitOfWork.userRepository.Update(result);
             _unitOfWork.CommitChanges();
@@ -200,6 +219,7 @@ namespace SDDEMO.Manager.Managers
 
             return ApiHelper<bool>.GenerateApiResponse(true, true, ResponseMessages.SuccessfullyUpdated.ToDescriptionString());
         }
+
 
         /// <summary>
         /// Change Status Method.

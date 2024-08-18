@@ -15,7 +15,6 @@ namespace SDDEMO.Application.DataTransferObjects.ResponseObjects
         public string name { get; set; }
         public string surname { get; set; }
         public string mailAddress { get; set; }
-        public string password { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
     }
