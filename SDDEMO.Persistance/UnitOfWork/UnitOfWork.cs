@@ -18,7 +18,6 @@ namespace SDDEMO.Persistance.UnitOfWork
         private UserRepository _userRepository;
         public IUserRepository userRepository => _userRepository = _userRepository ?? new UserRepository(_context);
 
-
         public UnitOfWork(DatabaseContext context)
         {
             _context = context;

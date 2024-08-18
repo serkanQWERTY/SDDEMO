@@ -10,15 +10,15 @@ namespace SDDEMO.API.Validators
     {
         public LoginValidator()
         {
-            RuleFor(a => a.username)
-            .NotNull()
-            .NotEmpty()
-                .WithMessage(ValidationMessages.FieldIsRequired.ToDescriptionString().Replace("{fieldName}", "Kullanıcı Adı"));
+            RuleFor(a => a.username).
+                NotNull().
+                NotEmpty().
+                WithMessage(ValidationMessages.FieldIsRequired.ToDescriptionString().Replace("{fieldName}", "Kullanıcı Adı"));
 
-            RuleFor(a => a.password)
-                .NotNull()
-            .NotEmpty()
-                .WithMessage(ValidationMessages.FieldIsRequired.ToDescriptionString().Replace("{fieldName}", "Şifre"));
+            RuleFor(a => a.password).
+                NotNull().
+                NotEmpty().
+                WithMessage(ValidationMessages.FieldIsRequired.ToDescriptionString().Replace("{fieldName}", "Şifre"));
         }
     }
 }
