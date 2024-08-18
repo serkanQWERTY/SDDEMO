@@ -105,7 +105,7 @@ namespace SDDEMO.Manager.Managers
         /// Logout Manager Method.
         /// </summary>
         /// <returns></returns>
-        public BaseApiResponse<bool> LogOut()
+        public BaseApiResponse<bool> Logout()
         {
             var currentUser = new TokenProvider(_httpContextAccessor, _unitOfWork).GetUserByToken();
 

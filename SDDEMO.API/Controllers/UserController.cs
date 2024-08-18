@@ -33,7 +33,6 @@ namespace SDDEMO.API.Controllers
         /// <param name="registerDto"></param>
         /// <returns>Returns ViewModel</returns>
         [HttpPost("Register")]
-        [Authorize] //TEST İÇİN
         public IActionResult Register([FromBody] RegisterDto registerDto)
         {
             var validationResult = new RegisterValidator().Validate(registerDto);
@@ -70,11 +69,11 @@ namespace SDDEMO.API.Controllers
         /// User log out.
         /// </summary>
         /// <returns>Returns state</returns>
-        [HttpGet("LogOut")]
+        [HttpPost("Logout")]
         [Authorize]
-        public IActionResult LogOut()
+        public IActionResult Logout()
         {
-            return ApiResponseProvider<bool>.CreateResult(userManager.LogOut());
+            return ApiResponseProvider<bool>.CreateResult(userManager.Logout());
         }
 
 
