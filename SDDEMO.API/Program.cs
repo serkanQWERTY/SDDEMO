@@ -9,6 +9,7 @@ using NLog.Web;
 using SDDEMO.API.BackgroundJobs;
 using SDDEMO.API.ExceptionHandling;
 using SDDEMO.API.Validators;
+using SDDEMO.Application.DataTransferObjects.RequestObjects;
 using SDDEMO.Application.Interfaces.Managers;
 using SDDEMO.Application.Interfaces.UnitOfWork;
 using SDDEMO.Domain;
@@ -121,7 +122,6 @@ builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ILoggingManager, LoggingManager>();
 builder.Services.AddScoped<IElasticManager, ElasticManager>();
-builder.Services.AddScoped<IValidator<BuildingConfiguration>, BuildingConfigurationValidator>();
 
 builder.Services.AddSingleton<IElasticClient>(sp =>
 {

@@ -12,6 +12,7 @@ namespace SDDEMO.Application.Interfaces.Managers
 {
     public interface IElasticManager
     {
+        BaseApiResponse<List<EnumViewModel>> GetAllBuildingTypes();
         Task<BaseApiResponse<bool>> AddBuildingConfigurationAsync(AddBuildingConfigurationsDTO addBuildingConfigurationsDTO);
         Task<BaseApiResponse<IEnumerable<BuildingConfigurationsViewModel>>> GetBuildingConfigurationsAsync();
         Task<BaseApiResponse<bool>> UpdateBuildingConfigurationAsync(UpdateBuildingConfigurationsDTO updateBuildingConfigurationsDTO);

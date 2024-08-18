@@ -26,9 +26,30 @@ namespace SDDEMO.Manager.Managers
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Get All Building Objects.
+        /// </summary>
+        /// <returns></returns>
+        public BaseApiResponse<List<EnumViewModel>> GetAllBuildingTypes()
+        {
+            var buildingTypes = ((BuildingType[])Enum.GetValues(typeof(BuildingType)))
+                .Select(a => new EnumViewModel
+                {
+                    id = Convert.ToInt32(a),
+                    name = a.ToDescriptionString()
+                }).OrderBy(x => x.id).ToList();
+
+            if (buildingTypes == null)
+            {
+                return ApiHelper<List<EnumViewModel>>.GenerateApiResponse(false, null, ResponseMessages.RecordNotFound.ToDescriptionString());
+            }
+
+            return ApiHelper<List<EnumViewModel>>.GenerateApiResponse(true, buildingTypes, ResponseMessages.SuccessfullyDone.ToDescriptionString());
+        }
+
 
         /// <summary>
-        /// Konfigürasyon Verilerini Ekleme Metodu.
+        /// Add Configuration Params Method.
         /// </summary>
         /// <param name="addBuildingConfigurationsDTO"></param>
         /// <returns></returns>
@@ -50,7 +71,7 @@ namespace SDDEMO.Manager.Managers
 
 
         /// <summary>
-        /// Konfigürasyon Verilerini Getirme Metodu.
+        /// Get Configuration Params Method.
         /// </summary>
         /// <returns></returns>
         public async Task<BaseApiResponse<IEnumerable<BuildingConfigurationsViewModel>>> GetBuildingConfigurationsAsync()
@@ -62,10 +83,17 @@ namespace SDDEMO.Manager.Managers
                 )
             );
 
+            if (searchResponse.Documents.Count == 0 || !searchResponse.IsValid)
+            {
+                logger.InfoLog($"Konfigürasyonlar getirilirken hata oluştu: {searchResponse?.OriginalException?.Message ?? "Bilinmeyen hata"}", false);
+
+                return ApiHelper<IEnumerable<BuildingConfigurationsViewModel>>.GenerateApiResponse(false, null, ResponseMessages.RecordNotFound.ToDescriptionString());
+            }
+
             var buildings = searchResponse.Hits.Select(hit => new BuildingConfigurationsViewModel
             {
                 id = hit.Id,
-                BuildingType = hit.Source.BuildingType,
+                BuildingType = (BuildingType)(int)hit.Source.BuildingType,
                 BuildingCost = hit.Source.BuildingCost,
                 ConstructionTime = hit.Source.ConstructionTime
             });
@@ -76,7 +104,7 @@ namespace SDDEMO.Manager.Managers
 
 
         /// <summary>
-        /// Konfigürasyon Verilerini Güncelleme Metodu.
+        /// Update Configuration Params Method.
         /// </summary>
         /// <param name="updateBuildingConfigurationsDTO"></param>
         /// <returns></returns>
@@ -101,7 +129,7 @@ namespace SDDEMO.Manager.Managers
 
 
         /// <summary>
-        /// Konfigürasyon Verilerini Silme Metodu.
+        /// Delete Configuration Params Method.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

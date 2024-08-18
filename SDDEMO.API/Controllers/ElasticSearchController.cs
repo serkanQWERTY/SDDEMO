@@ -9,6 +9,7 @@ using SDDEMO.Application.DataTransferObjects.RequestObjects;
 using SDDEMO.API.Utils;
 using SDDEMO.Application.DataTransferObjects.ResponseObjects;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SDDEMO.API.Controllers
 {
@@ -24,7 +25,7 @@ namespace SDDEMO.API.Controllers
         /// <param name="elasticManager"></param>
         public ElasticSearchController(IElasticManager elasticManager)
         {
-            elasticManager = elasticManager;
+            this.elasticManager = elasticManager;
         }
 
 
@@ -34,6 +35,7 @@ namespace SDDEMO.API.Controllers
         /// <param name="config"></param>
         /// <returns></returns>
         [HttpPost("AddBuildingConfigurationAsync")]
+        [Authorize]
         public async Task<IActionResult> AddBuildingConfiguration([FromBody] AddBuildingConfigurationsDTO addBuildingConfigurationsDTO)
         {
             var validationResult = new BuildingConfigurationValidator().Validate(addBuildingConfigurationsDTO);
@@ -48,10 +50,24 @@ namespace SDDEMO.API.Controllers
 
 
         /// <summary>
+        /// Gets all of Building Types Objects.
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200"></response>
+        [HttpGet("GetAllBuildingTypes")]
+        [Authorize]
+        public IActionResult GetAllBuildingTypes()
+        {
+            return ApiResponseProvider<List<EnumViewModel>>.CreateResult(elasticManager.GetAllBuildingTypes());
+        }
+
+
+        /// <summary>
         /// GetBuildingConfigurationsAsync Operation.
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetBuildingConfigurationsAsync")]
+        [Authorize]
         public async Task<IActionResult> GetBuildingConfigurations()
         {
             var result = await elasticManager.GetBuildingConfigurationsAsync();
@@ -67,6 +83,7 @@ namespace SDDEMO.API.Controllers
         /// <param name="config"></param>
         /// <returns></returns>
         [HttpPut("UpdateBuildingConfigurationAsync")]
+        [Authorize]
         public async Task<IActionResult> UpdateBuildingConfiguration([FromBody] UpdateBuildingConfigurationsDTO updateBuildingConfigurationsDTO)
         {
             var validationResult = new BuildingConfigurationValidator().Validate(updateBuildingConfigurationsDTO);
@@ -86,6 +103,7 @@ namespace SDDEMO.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("DeleteBuildingConfigurationAsync")]
+        [Authorize]
         public async Task<IActionResult> DeleteBuildingConfiguration(string id)
         {
             var result = await elasticManager.DeleteBuildingConfigurationAsync(id);
