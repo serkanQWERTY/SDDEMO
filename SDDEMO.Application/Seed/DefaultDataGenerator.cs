@@ -24,8 +24,7 @@ namespace SDDEMO.Application.DefaultDataGenerator.cs
                 creationDate = DateTime.UtcNow,
                 isActive = true,
                 isDeleted = false,
-                updatedDate = DateTime.UtcNow,
-                createdBy = Guid.Parse(GuidValues.StaticUserId.ToDescriptionString())
+                updatedDate = DateTime.UtcNow
             };
         }
     }

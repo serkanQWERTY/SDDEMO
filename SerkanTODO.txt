@@ -3,10 +3,7 @@
 3- Summaries!
 4- Syntax!
 
-
 Geliştirme
 
-1- Current user is null hatası.
 2- Configuration Reposunu (komple) yaz ElasticSearch Entegrasyonu.
-3- Son işlemler ve backend'i bitir.
 4- Password Hashing.

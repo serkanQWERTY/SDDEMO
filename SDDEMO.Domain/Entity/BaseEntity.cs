@@ -24,10 +24,5 @@ namespace SDDEMO.Domain.Entity
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
         public bool isDefault { get; set; }
-
-        [ForeignKey("user")]
-        public Guid createdBy { get; set; }
-
-        public virtual User? user { get; set; }
     }
 }

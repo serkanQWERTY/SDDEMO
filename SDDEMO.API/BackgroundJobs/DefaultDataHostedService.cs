@@ -55,7 +55,6 @@ namespace SDDEMO.API.BackgroundJobs
                     existingUser.isActive = user.isActive;
                     existingUser.isDeleted = user.isDeleted;
                     existingUser.updatedDate = user.updatedDate;
-                    existingUser.createdBy = user.createdBy;
 
                     unitOfWork.userRepository.Update(existingUser);
                 }

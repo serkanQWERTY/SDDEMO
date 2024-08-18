@@ -40,7 +40,6 @@ namespace SDDEMO.Manager.Managers
             entity.isDeleted = false;
             entity.isActive = true;
             entity.id = new Guid();
-            entity.user = user;
 
             _repository.Add(entity);
             _unitOfWork.CommitChanges();
@@ -64,16 +63,14 @@ namespace SDDEMO.Manager.Managers
 
             logger.InfoLog(LogMessages.GetAllDatabase.ToDescriptionString().Replace("{entity}", typeof(T).Name));
 
-            return _repository.GetAllWithFilter(a => Guid.Equals(user.id, a.user.id));
+            return _repository.GetAll();
         }
 
         public IQueryable<T> GetByFilterFromDatabase(Expression<Func<T, bool>> predicate)
         {
-            User user = new TokenProvider(_httpContextAccessor, _unitOfWork).GetUserByToken();
-
             logger.InfoLog(LogMessages.GetAllDatabase.ToDescriptionString().Replace("{entity}", typeof(T).Name));
 
-            return _repository.GetAllWithFilter(predicate).Where(a => Guid.Equals(user.id, a.user.id));
+            return _repository.GetAllWithFilter(predicate);
         }
 
         public T GetByIdFromDatabase(Guid id)
@@ -96,10 +93,9 @@ namespace SDDEMO.Manager.Managers
 
         public bool AnyDataExists()
         {
-            User user = new TokenProvider(_httpContextAccessor, _unitOfWork).GetUserByToken();
-            var data = GetByFilterFromDatabase(a => Guid.Equals(a.user.id, user.id)).ToList();
+            var data = GetByFilterFromDatabase(a => true).ToList();
 
-            return (data != null && data.Count() > 0);
+            return data != null && data.Count() > 0;
         }
     }
 }

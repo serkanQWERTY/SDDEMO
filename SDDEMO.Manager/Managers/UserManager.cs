@@ -34,8 +34,6 @@ namespace SDDEMO.Manager.Managers
         /// <returns></returns>
         public BaseApiResponse<RegisterViewModel> Register(RegisterDto registerDto)
         {
-            var currentUser = new TokenProvider(_httpContextAccessor, _unitOfWork).GetUserByToken();
-
             var existingUser = _unitOfWork.userRepository.GetAllWithFilter(u =>
                 u.username == registerDto.username || u.mailAddress == registerDto.mailAddress).FirstOrDefault();
 
@@ -57,7 +55,6 @@ namespace SDDEMO.Manager.Managers
                 isActive = true,
                 isDeleted = false,
                 updatedDate = DateTime.UtcNow,
-                createdBy = currentUser.id
             };
 
             _unitOfWork.userRepository.Add(newUser);
@@ -155,6 +152,7 @@ namespace SDDEMO.Manager.Managers
         {
             if (guid == null)
             {
+                logger.InfoLog("Güncelleme işlemi için geçersiz veri gönderildi (UpdateUserDto.guid null).", false);
                 return ApiHelper<bool>.GenerateApiResponse(false, false, ResponseMessages.InvalidValue.ToDescriptionString());
             }
 
@@ -176,6 +174,7 @@ namespace SDDEMO.Manager.Managers
         {
             if (updateUserDto == null)
             {
+                logger.InfoLog("Güncelleme işlemi için geçersiz veri gönderildi (UpdateUserDto null).", false);
                 return ApiHelper<bool>.GenerateApiResponse(false, false, ResponseMessages.AnErrorOccured.ToDescriptionString());
             }
 
@@ -183,6 +182,7 @@ namespace SDDEMO.Manager.Managers
 
             if (result == null)
             {
+                logger.InfoLog($"Güncellenecek kullanıcı bulunamadı. Kullanıcı ID: {updateUserDto.guid}", false);
                 return ApiHelper<bool>.GenerateApiResponse(false, false, ResponseMessages.RecordNotFound.ToDescriptionString());
             }
 
@@ -195,6 +195,8 @@ namespace SDDEMO.Manager.Managers
 
             _unitOfWork.userRepository.Update(result);
             _unitOfWork.CommitChanges();
+
+            logger.InfoLog($"Kullanıcı bilgileri başarıyla güncellendi. Kullanıcı ID: {updateUserDto.guid}", false);
 
             return ApiHelper<bool>.GenerateApiResponse(true, true, ResponseMessages.SuccessfullyUpdated.ToDescriptionString());
         }
