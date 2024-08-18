@@ -33,6 +33,7 @@ namespace SDDEMO.API.Controllers
         /// <param name="registerDto"></param>
         /// <returns>Returns ViewModel</returns>
         [HttpPost("Register")]
+        [Authorize] //TEST İÇİN
         public IActionResult Register([FromBody] RegisterDto registerDto)
         {
             var validationResult = new RegisterValidator().Validate(registerDto);
