@@ -26,6 +26,7 @@ namespace SDDEMO.API.Controllers
             this.userManager = userManager;
         }
 
+
         /// <summary>
         /// User Register Operation.
         /// </summary>
@@ -43,6 +44,7 @@ namespace SDDEMO.API.Controllers
 
             return ApiResponseProvider<RegisterViewModel>.CreateResult(result);
         }
+
 
         /// <summary>
         /// Login operation by username and password.
@@ -62,6 +64,7 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<LoginViewModel>.CreateResult(result);
         }
 
+
         /// <summary>
         /// User log out.
         /// </summary>
@@ -73,6 +76,7 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<bool>.CreateResult(userManager.LogOut());
         }
 
+
         /// <summary>
         /// Get All Users.
         /// </summary>
@@ -83,6 +87,7 @@ namespace SDDEMO.API.Controllers
         {
             return ApiResponseProvider<List<UserViewModel>>.CreateResult(userManager.GetAllUsers());
         }
+
 
         /// <summary>
         /// Update User.
@@ -101,6 +106,7 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<bool>.CreateResult(userManager.UpdateUser(dto));
         }
 
+
         /// <summary>
         /// Change Status of User.
         /// </summary>
@@ -112,6 +118,7 @@ namespace SDDEMO.API.Controllers
         {
             return ApiResponseProvider<bool>.CreateResult(userManager.ChangeStatusUser(guid));
         }
+
 
         /// <summary>
         /// Delete User.

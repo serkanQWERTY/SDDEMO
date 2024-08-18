@@ -33,6 +33,7 @@ namespace SDDEMO.Manager.Managers
             logger = LogManager.GetCurrentClassLogger();
         }
 
+
         public void InfoLog(string message, bool isLogin = false, string usernameLogin = "")
         {
             using (var scope = serviceScopeFactory.CreateScope())
