@@ -11,8 +11,10 @@ using SDDEMO.Manager.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace SDDEMO.Manager.Managers
 {
@@ -170,9 +172,31 @@ namespace SDDEMO.Manager.Managers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public BaseApiResponse<UserViewModel> UpdateUser(User user)
+        public BaseApiResponse<bool> UpdateUser(UpdateUserDto updateUserDto)
         {
-            throw new NotImplementedException();
+            if (updateUserDto == null)
+            {
+                return ApiHelper<bool>.GenerateApiResponse(false, false, ResponseMessages.AnErrorOccured.ToDescriptionString());
+            }
+
+            var result = _unitOfWork.userRepository.GetById(updateUserDto.guid);
+
+            if (result == null)
+            {
+                return ApiHelper<bool>.GenerateApiResponse(false, false, ResponseMessages.RecordNotFound.ToDescriptionString());
+            }
+
+            result.name = updateUserDto.name;
+            result.surname = updateUserDto.surname;
+            result.username = updateUserDto.username;
+            result.password = updateUserDto.password;
+            result.mailAddress = updateUserDto.mailAddress;
+            result.updatedDate = DateTime.UtcNow;
+
+            _unitOfWork.userRepository.Update(result);
+            _unitOfWork.CommitChanges();
+
+            return ApiHelper<bool>.GenerateApiResponse(true, true, ResponseMessages.SuccessfullyUpdated.ToDescriptionString());
         }
 
         /// <summary>

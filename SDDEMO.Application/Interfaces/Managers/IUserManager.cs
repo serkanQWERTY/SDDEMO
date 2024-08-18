@@ -18,7 +18,7 @@ namespace SDDEMO.Application.Interfaces.Managers
         BaseApiResponse<List<UserViewModel>> GetAllUsers();
         BaseApiResponse<bool> DeleteUser(Guid guid);
         BaseApiResponse<bool> DeleteUserPermanently(Guid guid);
-        BaseApiResponse<UserViewModel> UpdateUser(User user);
+        BaseApiResponse<bool> UpdateUser(UpdateUserDto updateUserDto);
         BaseApiResponse<bool> ChangeStatusUser(Guid guid);
         BaseApiResponse<UserViewModel> GetUserById(Guid guid);
     }

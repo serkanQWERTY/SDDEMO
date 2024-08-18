@@ -85,6 +85,23 @@ namespace SDDEMO.API.Controllers
         }
 
         /// <summary>
+        /// Update User.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPut("UpdateUser")]
+        [Authorize]
+        public IActionResult UpdateUser([FromBody] UpdateUserDto dto)
+        {
+            var validationResult = new UpdateValidator().Validate(dto);
+
+            if (!validationResult.IsValid)
+                return BasicResponse.GetValidationErrorResponse(validationResult);
+
+            return ApiResponseProvider<bool>.CreateResult(userManager.UpdateUser(dto));
+        }
+
+        /// <summary>
         /// Change Status of User.
         /// </summary>
         /// <param name="guid"></param>
