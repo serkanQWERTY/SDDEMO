@@ -87,7 +87,7 @@ namespace SDDEMO.Manager.Managers
             {
                 logger.InfoLog($"Konfigürasyonlar getirilirken hata oluştu: {searchResponse?.OriginalException?.Message ?? "Bilinmeyen hata"}", false);
 
-                return ApiHelper<IEnumerable<BuildingConfigurationsViewModel>>.GenerateApiResponse(false, null, ResponseMessages.RecordNotFound.ToDescriptionString());
+                return ApiHelper<IEnumerable<BuildingConfigurationsViewModel>>.GenerateApiResponse(true, null, ResponseMessages.RecordNotFound.ToDescriptionString());
             }
 
             var buildings = searchResponse.Hits.Select(hit => new BuildingConfigurationsViewModel
