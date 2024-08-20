@@ -27,12 +27,11 @@ namespace SDDEMO.Manager.Managers
             this.logger = logger;
         }
 
-
         /// <summary>
-        /// Register Manager Method.
+        /// Register Method.
         /// </summary>
         /// <param name="registerDto"></param>
-        /// <returns></returns>
+        /// <returns>RegisterViewModel</returns>
         public BaseApiResponse<RegisterViewModel> Register(RegisterDto registerDto)
         {
             var existingUser = _unitOfWork.userRepository.GetAllWithFilter(u =>
@@ -69,12 +68,11 @@ namespace SDDEMO.Manager.Managers
             return ApiHelper<RegisterViewModel>.GenerateApiResponse(true, mappedData, ResponseMessages.SuccessfullyCreated.ToDescriptionString());
         }
 
-
         /// <summary>
-        /// Login Manager Method.
+        /// Login Method.
         /// </summary>
         /// <param name="loginDto"></param>
-        /// <returns></returns>
+        /// <returns>LoginViewModel</returns>
         public BaseApiResponse<LoginViewModel> Login(LoginDto loginDto)
         {
             var userToSearch = _unitOfWork.userRepository.GetAllWithFilter(d =>
@@ -100,11 +98,10 @@ namespace SDDEMO.Manager.Managers
             return ApiHelper<LoginViewModel>.GenerateApiResponse(true, mappedData, ResponseMessages.SuccessfullyDone.ToDescriptionString());
         }
 
-
         /// <summary>
-        /// Logout Manager Method.
+        /// Logout Method.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public BaseApiResponse<bool> Logout()
         {
             var currentUser = new TokenProvider(_httpContextAccessor, _unitOfWork).GetUserByToken();
@@ -113,11 +110,10 @@ namespace SDDEMO.Manager.Managers
             return ApiHelper<bool>.GenerateApiResponse(true, true, ResponseMessages.SuccessfullyDone.ToDescriptionString());
         }
 
-
         /// <summary>
-        /// Get All Users from Database Method.
+        /// Get All Users Method.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List<UserViewModel></returns>
         public BaseApiResponse<List<UserViewModel>> GetAllUsers()
         {
             var users = _unitOfWork.userRepository.GetAll().Where(user => !user.isDeleted).ToList();
@@ -138,7 +134,7 @@ namespace SDDEMO.Manager.Managers
         /// Delete User (Change isDeleted Prop) Method.
         /// </summary>
         /// <param name="guid"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public BaseApiResponse<bool> DeleteUser(Guid guid)
         {
             var result = GetUserById(guid);
@@ -161,7 +157,7 @@ namespace SDDEMO.Manager.Managers
         /// Delete User (Permanently) Method.
         /// </summary>
         /// <param name="guid"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public BaseApiResponse<bool> DeleteUserPermanently(Guid guid)
         {
             if (guid == null)
@@ -179,12 +175,11 @@ namespace SDDEMO.Manager.Managers
 
         }
 
-
         /// <summary>
         /// Update User Method.
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
+        /// <param name="updateUserDto"></param>
+        /// <returns>bool</returns>
         public BaseApiResponse<bool> UpdateUser(UpdateUserDto updateUserDto)
         {
             if (updateUserDto == null)
@@ -220,12 +215,11 @@ namespace SDDEMO.Manager.Managers
             return ApiHelper<bool>.GenerateApiResponse(true, true, ResponseMessages.SuccessfullyUpdated.ToDescriptionString());
         }
 
-
         /// <summary>
         /// Change Status Method.
         /// </summary>
         /// <param name="guid"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public BaseApiResponse<bool> ChangeStatusUser(Guid guid)
         {
             var result = GetUserById(guid);
@@ -250,12 +244,11 @@ namespace SDDEMO.Manager.Managers
             return ApiHelper<bool>.GenerateApiResponse(false, false, ResponseMessages.AnErrorOccured.ToDescriptionString());
         }
 
-
         /// <summary>
         /// Get By Id User Method.
         /// </summary>
         /// <param name="guid"></param>
-        /// <returns></returns>
+        /// <returns>UserViewModel</returns>
         public BaseApiResponse<UserViewModel> GetUserById(Guid guid)
         {
             var user = _unitOfWork.userRepository.GetAll()

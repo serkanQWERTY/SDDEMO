@@ -26,12 +26,11 @@ namespace SDDEMO.API.Controllers
             this.userManager = userManager;
         }
 
-
         /// <summary>
-        /// User Register Operation.
+        /// Register Operation.
         /// </summary>
         /// <param name="registerDto"></param>
-        /// <returns>Returns ViewModel</returns>
+        /// <returns>RegisterViewModel</returns>
         [HttpPost("Register")]
         public IActionResult Register([FromBody] RegisterDto registerDto)
         {
@@ -45,14 +44,13 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<RegisterViewModel>.CreateResult(result);
         }
 
-
         /// <summary>
-        /// Login operation by username and password.
+        /// GetTokenAndLogin Operation.
         /// </summary>
         /// <param name="loginDto">Username and password</param>
-        /// <returns>Returns token if login operation is successfull</returns>
+        /// <returns>LoginViewModel</returns>
         [HttpPost("GetTokenAndLogin")]
-        public IActionResult GetToken([FromBody] LoginDto loginDto)
+        public IActionResult GetTokenAndLogin([FromBody] LoginDto loginDto)
         {
             var validationResult = new LoginValidator().Validate(loginDto);
 
@@ -64,11 +62,10 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<LoginViewModel>.CreateResult(result);
         }
 
-
         /// <summary>
-        /// User log out.
+        /// Logout Operation.
         /// </summary>
-        /// <returns>Returns state</returns>
+        /// <returns>bool</returns>
         [HttpPost("Logout")]
         [Authorize]
         public IActionResult Logout()
@@ -76,11 +73,10 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<bool>.CreateResult(userManager.Logout());
         }
 
-
         /// <summary>
-        /// Get All Users.
+        /// GetAllUsers Operation.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List<UserViewModel></returns>
         [HttpGet("GetAllUsers")]
         [Authorize]
         public IActionResult GetAllUsers()
@@ -88,12 +84,11 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<List<UserViewModel>>.CreateResult(userManager.GetAllUsers());
         }
 
-
         /// <summary>
-        /// Update User.
+        /// UpdateUser Operation.
         /// </summary>
         /// <param name="dto"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         [HttpPut("UpdateUser")]
         [Authorize]
         public IActionResult UpdateUser([FromBody] UpdateUserDto dto)
@@ -106,12 +101,11 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<bool>.CreateResult(userManager.UpdateUser(dto));
         }
 
-
         /// <summary>
-        /// Change Status of User.
+        /// ChangeStatusUser Operation.
         /// </summary>
         /// <param name="guid"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         [HttpPut("ChangeStatusUser")]
         [Authorize]
         public IActionResult ChangeStatusUser(Guid guid)
@@ -119,12 +113,11 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<bool>.CreateResult(userManager.ChangeStatusUser(guid));
         }
 
-
         /// <summary>
-        /// Delete User.
+        /// DeleteUser Operation.
         /// </summary>
         /// <param name="guid"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         [HttpDelete("DeleteUser")]
         [Authorize]
         public IActionResult DeleteUser(Guid guid)
@@ -132,12 +125,11 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<bool>.CreateResult(userManager.DeleteUser(guid));
         }
 
-
         /// <summary>
-        /// Delete User Permanently.
+        /// DeleteUserPermanently Operation.
         /// </summary>
         /// <param name="guid"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         [HttpDelete("DeleteUserPermanently")]
         [Authorize]
         public IActionResult DeleteUserPermanently(Guid guid)

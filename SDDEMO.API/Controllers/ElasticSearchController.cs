@@ -28,12 +28,11 @@ namespace SDDEMO.API.Controllers
             this.elasticManager = elasticManager;
         }
 
-
         /// <summary>
         /// AddBuildingConfigurationAsync Operation.
         /// </summary>
-        /// <param name="config"></param>
-        /// <returns></returns>
+        /// <param name="addBuildingConfigurationsDTO"></param>
+        /// <returns>bool</returns>
         [HttpPost("AddBuildingConfigurationAsync")]
         [Authorize]
         public async Task<IActionResult> AddBuildingConfiguration([FromBody] AddBuildingConfigurationsDTO addBuildingConfigurationsDTO)
@@ -48,12 +47,10 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<bool>.CreateResult(result);
         }
 
-
         /// <summary>
-        /// Gets all of Building Types Objects.
+        /// GetAllBuildingTypes Operation.
         /// </summary>
-        /// <returns></returns>
-        /// <response code="200"></response>
+        /// <returns>List<EnumViewModel></returns>
         [HttpGet("GetAllBuildingTypes")]
         [Authorize]
         public IActionResult GetAllBuildingTypes()
@@ -61,11 +58,10 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<List<EnumViewModel>>.CreateResult(elasticManager.GetAllBuildingTypes());
         }
 
-
         /// <summary>
         /// GetBuildingConfigurationsAsync Operation.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IEnumerable<BuildingConfigurationsViewModel></returns>
         [HttpGet("GetBuildingConfigurationsAsync")]
         [Authorize]
         public async Task<IActionResult> GetBuildingConfigurations()
@@ -75,13 +71,11 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<IEnumerable<BuildingConfigurationsViewModel>>.CreateResult(result);
         }
 
-
         /// <summary>
-        /// UpdateBuildingConfiguration Operation.
+        /// UpdateBuildingConfigurationAsync Operation.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="config"></param>
-        /// <returns></returns>
+        /// <param name="updateBuildingConfigurationsDTO"></param>
+        /// <returns>bool</returns>
         [HttpPut("UpdateBuildingConfigurationAsync")]
         [Authorize]
         public async Task<IActionResult> UpdateBuildingConfiguration([FromBody] UpdateBuildingConfigurationsDTO updateBuildingConfigurationsDTO)
@@ -96,12 +90,11 @@ namespace SDDEMO.API.Controllers
             return ApiResponseProvider<bool>.CreateResult(result);
         }
 
-
         /// <summary>
         /// DeleteBuildingConfiguration Operation.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         [HttpDelete("DeleteBuildingConfigurationAsync")]
         [Authorize]
         public async Task<IActionResult> DeleteBuildingConfiguration(string id)

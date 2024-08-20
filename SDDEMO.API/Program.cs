@@ -22,26 +22,19 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 //Add Nlog Config
-
 builder.Logging.ClearProviders();
 builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
 builder.Host.UseNLog();
-
 //Add Nlog Config
 
-// Cors Policy
-
+//Cors Policy
 builder.Services.AddCors(options =>
      options.AddDefaultPolicy(builder =>
      builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
+//Cors Policy
 
-// Cors Policy
-
-// Add services to the container.
-
+//Services
 builder.Services.AddControllers();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
@@ -87,15 +80,13 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+//Services
 
-//Start Hosted Services
-
+//Hosted Services
 builder.Services.AddHostedService<DefaultDataHostedService>();
-
-//Start Hosted Services
+//Hosted Services
 
 // Configure JWT
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option =>
 {
     option.TokenValidationParameters = new TokenValidationParameters
@@ -109,9 +100,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecretKey"]))
     };
 });
-
 // Configure JWT
 
+//Services
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -131,18 +122,18 @@ builder.Services.AddSingleton<IElasticClient>(sp =>
 });
 
 builder.Services.AddSingleton<TestHandler>();
+//Services
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+// Configure the HTTP request pipeline.
 
 app.UseCustomException();
 
@@ -156,7 +147,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-
+//Auto Migration.
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -164,5 +155,6 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<DatabaseContext>();
     context.Database.Migrate();
 }
+//Auto Migration.
 
 app.Run();

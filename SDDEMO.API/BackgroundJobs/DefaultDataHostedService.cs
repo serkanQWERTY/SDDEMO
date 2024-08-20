@@ -31,6 +31,10 @@ namespace SDDEMO.API.BackgroundJobs
 
         }
 
+        /// <summary>
+        /// Admin's datas seed Method.
+        /// </summary>
+        /// <returns></returns>
         public async Task SeedDefaultData()
         {
             using (var scope = serviceScopeFactory.CreateScope())

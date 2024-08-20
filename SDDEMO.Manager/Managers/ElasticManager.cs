@@ -20,6 +20,11 @@ namespace SDDEMO.Manager.Managers
         private readonly IElasticClient elasticClient;
         private ILoggingManager logger;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="elasticClient"></param>
+        /// <param name="logger"></param>
         public ElasticManager(IElasticClient elasticClient, ILoggingManager logger)
         {
             this.elasticClient = elasticClient;
@@ -27,9 +32,9 @@ namespace SDDEMO.Manager.Managers
         }
 
         /// <summary>
-        /// Get All Building Objects.
+        /// Get All Building Objects Method.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List<EnumViewModel></returns>
         public BaseApiResponse<List<EnumViewModel>> GetAllBuildingTypes()
         {
             var buildingTypes = ((BuildingType[])Enum.GetValues(typeof(BuildingType)))
@@ -47,12 +52,11 @@ namespace SDDEMO.Manager.Managers
             return ApiHelper<List<EnumViewModel>>.GenerateApiResponse(true, buildingTypes, ResponseMessages.SuccessfullyDone.ToDescriptionString());
         }
 
-
         /// <summary>
         /// Add Configuration Params Method.
         /// </summary>
         /// <param name="addBuildingConfigurationsDTO"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<BaseApiResponse<bool>> AddBuildingConfigurationAsync(AddBuildingConfigurationsDTO addBuildingConfigurationsDTO)
         {
             var response = await elasticClient.IndexDocumentAsync(addBuildingConfigurationsDTO);
@@ -69,11 +73,10 @@ namespace SDDEMO.Manager.Managers
             }
         }
 
-
         /// <summary>
         /// Get Configuration Params Method.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IEnumerable<BuildingConfigurationsViewModel></returns>
         public async Task<BaseApiResponse<IEnumerable<BuildingConfigurationsViewModel>>> GetBuildingConfigurationsAsync()
         {
             var searchResponse = await elasticClient.SearchAsync<BuildingConfigurationsViewModel>(s => s
@@ -102,12 +105,11 @@ namespace SDDEMO.Manager.Managers
             return ApiHelper<IEnumerable<BuildingConfigurationsViewModel>>.GenerateApiResponse(true, buildings, ResponseMessages.SuccessfullyDone.ToDescriptionString());
         }
 
-
         /// <summary>
         /// Update Configuration Params Method.
         /// </summary>
         /// <param name="updateBuildingConfigurationsDTO"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<BaseApiResponse<bool>> UpdateBuildingConfigurationAsync(UpdateBuildingConfigurationsDTO updateBuildingConfigurationsDTO)
         {
             var response = await elasticClient.UpdateAsync<UpdateBuildingConfigurationsDTO>(updateBuildingConfigurationsDTO.id, u => u
@@ -127,12 +129,11 @@ namespace SDDEMO.Manager.Managers
             }
         }
 
-
         /// <summary>
         /// Delete Configuration Params Method.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<BaseApiResponse<bool>> DeleteBuildingConfigurationAsync(string id)
         {
             var response = await elasticClient.DeleteAsync<BuildingConfiguration>(id, d => d

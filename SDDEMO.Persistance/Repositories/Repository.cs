@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace SDDEMO.Persistance.Repositories
 {
-
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly DbContext _dbContext;

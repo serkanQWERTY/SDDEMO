@@ -24,6 +24,10 @@ namespace SDDEMO.Manager.Managers
         private IHttpContextAccessor httpContextAccessor;
         private Logger logger;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="serviceScopeFactory"></param>
         public LoggingManager(IServiceScopeFactory serviceScopeFactory)
         {
             this.serviceScopeFactory = serviceScopeFactory;
@@ -33,7 +37,12 @@ namespace SDDEMO.Manager.Managers
             logger = LogManager.GetCurrentClassLogger();
         }
 
-
+        /// <summary>
+        /// Infolog Method.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="isLogin"></param>
+        /// <param name="usernameLogin"></param>
         public void InfoLog(string message, bool isLogin = false, string usernameLogin = "")
         {
             using (var scope = serviceScopeFactory.CreateScope())
@@ -63,6 +72,10 @@ namespace SDDEMO.Manager.Managers
             }
         }
 
+        /// <summary>
+        /// ErrorLog Method.
+        /// </summary>
+        /// <param name="message"></param>
         public void ErrorLog(string message)
         {
             using (var scope = serviceScopeFactory.CreateScope())
